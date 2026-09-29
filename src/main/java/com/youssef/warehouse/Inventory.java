@@ -1,5 +1,6 @@
 package com.youssef.warehouse;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Inventory {
 
@@ -25,7 +26,24 @@ public class Inventory {
 
     }
 
-    
+    public ArrayList <Product> findLowStock(int threshold){
+
+        // Start with an empty list and add matching products as we find them.
+        ArrayList<Product> lowStock = new ArrayList<>();
+
+        // products.values() gives all the Product objects (without their ID keys).
+        // checking every product, which is a linear search: the time grows with the product count.
+        for (Product p : products.values()){
+            
+            if(p.getQuantity() <= threshold){
+                lowStock.add(p);
+
+            }
+        }
+        return  lowStock ; 
+    }
+
+
 
 
 }
