@@ -2,36 +2,34 @@ package com.youssef.warehouse;
 
 public class Main {
     public static void main(String[] args) {
-        
-    Inventory inventory = new Inventory();
+
+        Inventory inventory = new Inventory();
         inventory.addProduct(new Product(104, "AirPods Pro", "Audio", 24900, 7));
         inventory.addProduct(new Product(201, "Kindle", "Tablets", 9999, 20));
         inventory.addProduct(new Product(305, "USB-C Cable", "Accessories", 1299, 2));
 
-        // Look up a product that exists, then one that doesn't (get() returns null).
-        System.out.println("Found: " + inventory.findProduct(104));
-        System.out.println("Missing: " + inventory.findProduct(999));
+        // Create a customer and an empty order that belongs to them.
+        Customer customer = new Customer(1, "Youssef", "youssef@example.com");
+        Order order = new Order(10482, customer);
 
-        // A duplicate ID makes addProduct throw, and try/catch handles it.
+        // Look each product up by ID, then add it to the order with a quantity.
+        order.addItem(new OrderItem(inventory.findProduct(104), 2));
+        order.addItem(new OrderItem(inventory.findProduct(305), 1));
+
+        // println calls Order's toString() automatically.
+        System.out.println(order);
+
+        // Move the order to the next stage.
+        order.setStatus(OrderStatus.PROCESSING);
+
+        // The order is no longer PLACED, so addItem should throw.
+        // try/catch handles the exception instead of crashing the program.
         try {
-            inventory.addProduct(new Product(104, "Fake AirPods", "Audio", 100, 1));
-        } catch (IllegalArgumentException e) {
+            order.addItem(new OrderItem(inventory.findProduct(201), 1));
+        } catch (IllegalStateException e) {
             System.out.println("Rejected: " + e.getMessage());
         }
 
-        // Loop over every product with 10 units or fewer left.
-        System.out.println("Low stock (10 or fewer):");
-        for (Product p : inventory.findLowStock(10)) {
-            System.out.println("  " + p);
-        }
-
-        // Create a Customer object and print it. println calls toString() automatically.
-        Customer customer = new Customer(1, "Youssef", "youssef@example.com");
-        System.out.println(customer);
-
-        Customer customer2 = new Customer(2, "Omar", "Omar@example.com");
-        // Getters read individual fields, since the fields themselves are private.
-        System.out.println("Customer name: " + customer2.getName());
 
 
     }
