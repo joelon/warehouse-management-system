@@ -43,6 +43,12 @@ public class Inventory {
         return  lowStock ; 
     }
 
+    // Returns all products as a NEW list, so sorting it later never disturbs the HashMap.
+    // new ArrayList<>(products.values()) builds a list by copying the map's values.
+    public ArrayList<Product> getAllProducts() {
+        return new ArrayList<>(products.values());
+    }
+
 
 
 

@@ -1,5 +1,7 @@
 package com.youssef.warehouse;
 
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -7,31 +9,25 @@ public class Main {
         inventory.addProduct(new Product(104, "AirPods Pro", "Audio", 24900, 7));
         inventory.addProduct(new Product(201, "Kindle", "Tablets", 9999, 20));
         inventory.addProduct(new Product(305, "USB-C Cable", "Accessories", 1299, 2));
+        inventory.addProduct(new Product(410, "Keyboard", "Accessories", 7950, 15));
+        inventory.addProduct(new Product(512, "Mouse", "Accessories", 2500, 30));
 
-        // Create a customer and an empty order that belongs to them.
-        Customer customer = new Customer(1, "Youssef", "youssef@example.com");
-        Order order = new Order(10482, customer);
+        // Copy all products into a list we can sort. The HashMap itself stays untouched.
+        ArrayList<Product> list = inventory.getAllProducts();
 
-        // Look each product up by ID, then add it to the order with a quantity.
-        order.addItem(new OrderItem(inventory.findProduct(104), 2));
-        order.addItem(new OrderItem(inventory.findProduct(305), 1));
-
-        // println calls Order's toString() automatically.
-        System.out.println(order);
-
-        // Move the order to the next stage.
-        order.setStatus(OrderStatus.PROCESSING);
-
-        // The order is no longer PLACED, so addItem should throw.
-        // try/catch handles the exception instead of crashing the program.
-        try {
-            order.addItem(new OrderItem(inventory.findProduct(201), 1));
-        } catch (IllegalStateException e) {
-            System.out.println("Rejected: " + e.getMessage());
+        // A HashMap has no guaranteed order, so this order may look random.
+        System.out.println("Before sorting:");
+        for (Product p : list) {
+            System.out.println("  " + p);
         }
 
+        // Sort the list in place, cheapest first, using our own bubble sort.
+        Sorter.bubbleSortByPrice(list);
 
-
+        System.out.println("After sorting by price (low to high):");
+        for (Product p : list) {
+            System.out.println("  " + p);
+        }
     }
 }
     
