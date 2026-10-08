@@ -13,4 +13,28 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <!-- Dependencies are libraries that Maven downloads for us automatically. -->
+    <dependencies>
+        <!-- JUnit 5 (also called Jupiter): the library that provides @Test and assertions. -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <!-- "test" scope: used only when running tests, never in the finished program. -->
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Surefire is the Maven plugin that finds and runs our tests.
+                 We pin a recent version because older ones don't understand JUnit 5. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
